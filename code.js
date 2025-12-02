@@ -1,10 +1,13 @@
 const Container = document.getElementById('GameContainer');
 let Grid = [];
+let Structures = [];
 for (let i = 0; i < 15; i++) {
     Grid[i] = [];
     for (let j = 0; j < 15; j++) {
         const block = document.createElement('div');
-        Grid[i][j] = block;       
+        Grid[i][j] = block;   
+        block.dataset.row = i;
+        block.dataset.col = j;    
         Container.appendChild(block);
     }
 }
@@ -26,42 +29,73 @@ for (let i = 0; i < 15; i++) {
 }
 
 function SummonBlocks(array, i, j) {
-    let GroupCount = 0;
     let GroupElements = [];
     let RandomColor = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
-    for ([x, y] of positions) {
+    for (let [x, y] of positions) {
         targetX = x + j;
         targetY = y + i;
+
         if (targetX >= 0 && targetY >= 0 && targetX <= array.length - 1 && targetY <= array[0].length - 1) {
-            array[targetX][targetY].style.background = `rgb(${[...RandomColor]})`;
-            GroupCount++;
-            GroupElements.push(array[targetX][targetY]);
-            array[targetX][targetY].addEventListener('click', () => {
-                GroupCount--;
-                if (GroupCount <= 0) {
-                    GroupElements.forEach(e => {
-                        e.classList.background = 'white';
-                    });
-                }
-            }, { once: true});
-
-            array[targetX][targetY].addEventListener('dragover', (e) => {
-                e.preventDefault();
-            });
-
-            array[targetX][targetY].addEventListener('drop', (e) => {
-                e.preventDefault();
-                for ([x, y] of positions) {
-                    targetX2 = x + j;
-                    targetY2 = y + i;
-                    if (targetX2 >= 0 && targetY2 >= 0 && targetX2 <= array.length - 1 && targetY2 <= array[0].length - 1) {
-                        array[targetX2][targetY2].style.background = 'white';
-                    }
-                }
-                console.log('drop');
-            });
+            let cell = array[targetX][targetY];
+            cell.style.background = `rgb(${[...RandomColor]})`;
+            cell.dataset.structureID = Structures.length;
+            GroupElements.push(cell);
         }
     }
+
+    Structures.push({
+        cells: GroupElements,
+        color: RandomColor,
+        id: Structures.length
+    });
+}
+
+Container.addEventListener('dragover', (e) => {
+    e.preventDefault();
+});
+
+Container.addEventListener('drop', (e) => {
+    e.preventDefault();
+
+    const target = e.target;
+    if(!target.dataset.row) return;
+
+    const centerRow = parseInt(target.dataset.row);
+    const centerCol = parseInt(target.dataset.col);
+
+    for (let [dy, dx] of positions) {
+        let targetRow = centerRow + dy;
+        let targetCol = centerCol + dx;
+
+        if (
+            targetRow >= 0 && 
+            targetRow < Grid.length &&
+            targetCol >= 0 &&
+            targetCol < Grid[0].length ) {
+                let cell = Grid[targetRow][targetCol];
+
+            if (cell.style.background && cell.style.background !== 'rgb(255, 255, 255)') {
+                cell.classList.add('marked');
+            }
+        }
+    }
+    
+    CheckCompleted();
+});
+
+function CheckCompleted() {
+    Structures.forEach(e => {
+        let allMarked = e.cells.every(cell => cell.classList.contains('marked'));
+
+        if (allMarked && !e.completed) {
+            e.completed = true;
+
+            e.cells.forEach(cell => {
+                cell.classList.remove('marked');
+                cell.classList.add('completed');
+            })
+        }
+    });
 }
 
 const Blocks = document.getElementById('A1');
@@ -77,5 +111,5 @@ for (let i = 0; i < 3; i++) {
 SummonBlocks(B, 1, 1);
 
 Blocks.addEventListener('dragstart', (e) => {
-    e.dataTransfer.setData('text/plain', 'data');
+    e.dataTransfer.setData('positions', JSON.stringify(positions));
 });
