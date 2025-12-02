@@ -11,15 +11,35 @@ for (let i = 0; i < 15; i++) {
     }
 }
 
+const positions = [
+    [0, 0],
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1]
+]
+
 for (let i = 0; i < 15; i++) {
     for (let j = 0; j < 15; j++) {
-        if (i > 0 && j > 0 && i < 14 && j < 14) {
-            if (Math.random() > 0.9) {
-                Grid[i + 1][j].classList.add('Fill');
-                Grid[i - 1][j].classList.add('Fill');
-                Grid[i][j + 1].classList.add('Fill');
-                Grid[i][j - 1].classList.add('Fill');
-                Grid[i][j].classList.add('Fill');
+        if (Math.random() > 0.9) {
+            let GroupCount = 0;
+            let GroupElements = [];
+            for ([x, y] of positions) {
+                targetX = x + j;
+                targetY = y + i;
+                if (targetX >= 0 && targetY >= 0 && targetX <= 14 && targetY <= 14) {
+                    Grid[targetX][targetY].classList.add('Fill');
+                    GroupCount++;
+                    GroupElements.push(Grid[targetX][targetY]);
+                    Grid[targetX][targetY].addEventListener('click', () => {
+                        GroupCount--;
+                        if (GroupCount <= 0) {
+                            GroupElements.forEach(e => {
+                                e.classList.remove('Fill');
+                            });
+                        }
+                    }, { once: true});
+                }
             }
         }
     }
