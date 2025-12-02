@@ -28,21 +28,38 @@ for (let i = 0; i < 15; i++) {
 function SummonBlocks(array, i, j) {
     let GroupCount = 0;
     let GroupElements = [];
+    let RandomColor = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
     for ([x, y] of positions) {
         targetX = x + j;
         targetY = y + i;
         if (targetX >= 0 && targetY >= 0 && targetX <= array.length - 1 && targetY <= array[0].length - 1) {
-            array[targetX][targetY].classList.add('Fill');
+            array[targetX][targetY].style.background = `rgb(${[...RandomColor]})`;
             GroupCount++;
             GroupElements.push(array[targetX][targetY]);
             array[targetX][targetY].addEventListener('click', () => {
                 GroupCount--;
                 if (GroupCount <= 0) {
                     GroupElements.forEach(e => {
-                        e.classList.remove('Fill');
+                        e.classList.background = 'white';
                     });
                 }
             }, { once: true});
+
+            array[targetX][targetY].addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            array[targetX][targetY].addEventListener('drop', (e) => {
+                e.preventDefault();
+                for ([x, y] of positions) {
+                    targetX2 = x + j;
+                    targetY2 = y + i;
+                    if (targetX2 >= 0 && targetY2 >= 0 && targetX2 <= array.length - 1 && targetY2 <= array[0].length - 1) {
+                        array[targetX2][targetY2].style.background = 'white';
+                    }
+                }
+                console.log('drop');
+            });
         }
     }
 }
@@ -58,3 +75,7 @@ for (let i = 0; i < 3; i++) {
     }
 }
 SummonBlocks(B, 1, 1);
+
+Blocks.addEventListener('dragstart', (e) => {
+    e.dataTransfer.setData('text/plain', 'data');
+});
