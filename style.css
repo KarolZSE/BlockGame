@@ -25,3 +25,7 @@
     height: 100px;
     gap: 5px;
 }
+
+.marked {
+    background: red;
+}

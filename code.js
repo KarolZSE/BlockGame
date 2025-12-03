@@ -37,7 +37,10 @@ function SummonBlocks(array, i, j) {
 
         if (targetX >= 0 && targetY >= 0 && targetX <= array.length - 1 && targetY <= array[0].length - 1) {
             let cell = array[targetX][targetY];
-            cell.style.background = `rgb(${[...RandomColor]})`;
+            cell.style.border = `1px solid rgb(${[...RandomColor]})`;
+            if (array.length == 3) {
+                cell.style.background = 'red';
+            }
             cell.dataset.structureID = Structures.length;
             GroupElements.push(cell);
         }
@@ -74,7 +77,7 @@ Container.addEventListener('drop', (e) => {
             targetCol < Grid[0].length ) {
                 let cell = Grid[targetRow][targetCol];
 
-            if (cell.style.background && cell.style.background !== 'rgb(255, 255, 255)') {
+            if (cell.dataset.structureID !== undefined) {
                 cell.classList.add('marked');
             }
         }
@@ -90,12 +93,28 @@ function CheckCompleted() {
         if (allMarked && !e.completed) {
             e.completed = true;
 
-            e.cells.forEach(cell => {
-                cell.classList.remove('marked');
-                cell.classList.add('completed');
-            })
+            RemoveStructures(e);
+
+            Structures = Structures.filter(s => s !== e);
+
+            SpawnRandomStructure();
         }
     });
+}
+
+function RemoveStructures(e) {
+    e.cells.forEach(cell => {
+        cell.classList.remove('marked');
+        cell.removeAttribute('data-structure-id');
+        cell.style.border = '';
+        cell.style.background = '';
+    });
+}
+
+function SpawnRandomStructure() {
+    let i = Math.floor(Math.random() * 15);
+    let j = Math.floor(Math.random() * 15);
+    SummonBlocks(Grid, i, j);
 }
 
 const Blocks = document.getElementById('A1');
