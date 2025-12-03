@@ -66,6 +66,8 @@ Container.addEventListener('drop', (e) => {
     const centerRow = parseInt(target.dataset.row);
     const centerCol = parseInt(target.dataset.col);
 
+    if (!CanBePlaced(centerRow, centerCol)) return;
+    
     for (let [dy, dx] of positions) {
         let targetRow = centerRow + dy;
         let targetCol = centerCol + dx;
@@ -77,14 +79,30 @@ Container.addEventListener('drop', (e) => {
             targetCol < Grid[0].length ) {
                 let cell = Grid[targetRow][targetCol];
 
-            if (cell.dataset.structureID !== undefined) {
                 cell.classList.add('marked');
             }
-        }
     }
     
     CheckCompleted();
 });
+
+function CanBePlaced(centerRow, centerCol) {
+    for (let [dy, dx] of positions) {
+        let targetRow = centerRow + dy;
+        let targetCol = centerCol + dx;
+
+        if (
+            targetRow >= 0 && 
+            targetRow < Grid.length &&
+            targetCol >= 0 &&
+            targetCol < Grid[0].length ) {
+                let cell = Grid[targetRow][targetCol];
+                if (cell.classList.contains('marked')) return false;
+            }
+    }
+
+    return true;
+}
 
 function CheckCompleted() {
     Structures.forEach(e => {
