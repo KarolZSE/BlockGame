@@ -235,7 +235,12 @@ function CanBePlaced(centerRow, centerCol, AdditionalCheck = false, type) {
     return true;
 }
 
+let PointsHTML = document.getElementById('Points');
+let VPAI = document.getElementById('VisualPointsAddIndicator');
+let Points = 0;
+
 let VisualTimeAdd = document.getElementById('VisualTimeAdd');
+
 function CheckCompleted() {
     Structures.forEach(e => {
         let allMarked = e.cells.every(cell => cell.classList.contains('marked'));
@@ -246,21 +251,25 @@ function CheckCompleted() {
             StartingTime += 5000;
             
             VisualTimeAdd.textContent = '+5 ↑';
+
+            let AddedPoints = 0;
+            e.cells.forEach(cell => {
+                Points++;
+                AddedPoints++;
+                cell.style.border = '';
+            });
+
+            PointsHTML.textContent = Points;
+            VPAI.textContent = `+${AddedPoints} ↑`;
             setTimeout(() => {
-                VisualTimeAdd.textContent = '';  
+                VisualTimeAdd.textContent = '';
+                VPAI.textContent = '';
             }, 1000);
-            RemoveStructures(e);
 
             Structures = Structures.filter(s => s !== e);
 
             SpawnRandomStructure();
         }
-    });
-}
-
-function RemoveStructures(e) {
-    e.cells.forEach(cell => {
-        clearCell(cell);
     });
 }
 
@@ -278,8 +287,8 @@ function SpawnRandomStructure() {
 }
 
 const AvailableBlocks = document.querySelectorAll('#AvailableBlocks div'); 
-const Blocks = document.getElementById('A1');
 let Grids = [];
+
 AvailableBlocks.forEach((e) => {
     let B = [];
 
