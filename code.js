@@ -24,8 +24,39 @@ const positions = [
         [-1, 0],
         [0, 0],
         [1, 0],
+        [1, 1]
+    ],
+    [
+        [-1, 1],
+        [0, 1],
         [1, 1],
+        [1, 0]
+    ],
+    [
+        [-1, 0],
+        [0, 0],
+        [0, 1],
+        [1, 0]
+    ],
+    [
+        [-1, -1],
+        [-1, 0],
+        [0, 0],
+        [0, 1]
+    ],
+    [
+        [0, -1],
+        [0, 0],
+        [-1, 0],
+        [-1, 1]
+    ],
+    [
+        [-1, 1],
+        [-1, 0],
+        [0, 0],
+        [0, 1]
     ]
+
 ]
 
 let draggedElement;
@@ -43,7 +74,7 @@ setInterval(() => {
 for (let i = 0; i < 15; i++) {
     for (let j = 0; j < 15; j++) {
         if (Math.random() > 0.9) {
-            SummonBlocks(Grid, i, j, Math.round(Math.random()));
+            SummonBlocks(Grid, i, j, Math.floor(Math.random() * 7));
         }
     }
 }
@@ -110,6 +141,7 @@ Container.addEventListener('drop', (e) => {
             }
     }
     
+    RerollBlocks();
     CheckCompleted();
     checkFullRows();
     checkFullCols();
@@ -213,7 +245,7 @@ function clearCell(cell) {
 function SpawnRandomStructure() {
     let i = Math.floor(Math.random() * 15);
     let j = Math.floor(Math.random() * 15);
-    SummonBlocks(Grid, i, j, Math.round(Math.random()));
+    SummonBlocks(Grid, i, j, Math.floor(Math.random() * 7));
 }
 
 const Blocks = document.getElementById('A1');
@@ -226,7 +258,7 @@ for (let i = 0; i < 3; i++) {
         Blocks.appendChild(block);
     }
 }
-let temp = Math.round(Math.random());
+let temp = Math.floor(Math.random() * 7);
 Blocks.type = temp;
 SummonBlocks(B, 1, 1, temp);
 
@@ -236,3 +268,15 @@ Blocks.addEventListener('dragstart', (e) => {
     };
     e.dataTransfer.setData('positions', JSON.stringify(positions));
 });
+
+function RerollBlocks() {
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            clearCell(B[i][j]);
+        }
+    }
+
+    temp = Math.floor(Math.random() * 7);
+    Blocks.type = temp;
+    SummonBlocks(B, 1, 1, temp);
+}
