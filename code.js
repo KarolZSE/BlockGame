@@ -20,6 +20,17 @@ const positions = [
     [0, -1]
 ]
 
+const Timer = document.getElementById('Timer');
+let StartingTime = Date.now() + 10000;
+Timer.textContent = 10;
+
+setInterval(() => {
+    Timer.textContent = Math.floor((StartingTime - Date.now()) / 1000);
+    if (StartingTime >= Date.now()) {
+        console.log('You run out off time');
+    }
+}, 950);
+
 for (let i = 0; i < 15; i++) {
     for (let j = 0; j < 15; j++) {
         if (Math.random() > 0.9) {
@@ -153,6 +164,7 @@ function CanBePlaced(centerRow, centerCol, AdditionalCheck = false) {
     return true;
 }
 
+let VisualTimeAdd = document.getElementById('VisualTimeAdd');
 function CheckCompleted() {
     Structures.forEach(e => {
         let allMarked = e.cells.every(cell => cell.classList.contains('marked'));
@@ -160,6 +172,12 @@ function CheckCompleted() {
         if (allMarked && !e.completed) {
             e.completed = true;
 
+            StartingTime += 5000;
+            
+            VisualTimeAdd.textContent = '+5 ↑';
+            setTimeout(() => {
+                VisualTimeAdd.textContent = '';  
+            }, 1000);
             RemoveStructures(e);
 
             Structures = Structures.filter(s => s !== e);
