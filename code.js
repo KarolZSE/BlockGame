@@ -31,6 +31,7 @@ for (let i = 0; i < 15; i++) {
 function SummonBlocks(array, i, j) {
     let GroupElements = [];
     let RandomColor = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
+
     for (let [x, y] of positions) {
         targetX = x + j;
         targetY = y + i;
@@ -84,7 +85,47 @@ Container.addEventListener('drop', (e) => {
     }
     
     CheckCompleted();
+    checkFullRows();
+    checkFullCols();
 });
+
+function checkFullRows() {
+    for (let row = 0; row < 15; row++) {
+        let full = true;
+
+        for (let col = 0; col < 15; col++) {
+            if (!Grid[row][col].classList.contains("marked")) {
+                full = false;
+                break;
+            }
+        }
+
+        if (full) {
+            for (let col = 0; col < 15; col++) {
+                clearCell(Grid[row][col]);
+            }
+        }
+    }
+}
+
+function checkFullCols() {
+    for (let col = 0; col < 15; col++) {
+        let full = true;
+
+        for (let row = 0; row < 15; row++) {
+            if (!Grid[row][col].classList.contains("marked")) {
+                full = false;
+                break;
+            }
+        }
+
+        if (full) {
+            for (let row = 0; row < 15; row++) {
+                clearCell(Grid[row][col]);
+            }
+        }
+    }
+}
 
 function CanBePlaced(centerRow, centerCol) {
     for (let [dy, dx] of positions) {
@@ -122,11 +163,15 @@ function CheckCompleted() {
 
 function RemoveStructures(e) {
     e.cells.forEach(cell => {
-        cell.classList.remove('marked');
-        cell.removeAttribute('data-structure-id');
-        cell.style.border = '';
-        cell.style.background = '';
+        clearCell(cell);
     });
+}
+
+function clearCell(cell) {
+    cell.classList.remove('marked');
+    cell.removeAttribute('data-structure-id');
+    cell.style.border = '';
+    cell.style.background = '';
 }
 
 function SpawnRandomStructure() {
