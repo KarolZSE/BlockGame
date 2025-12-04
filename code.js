@@ -141,7 +141,7 @@ Container.addEventListener('drop', (e) => {
             }
     }
     
-    RerollBlocks();
+    RerollBlocks(draggedElement.gridIndex);
     CheckCompleted();
     checkFullRows();
     checkFullCols();
@@ -248,35 +248,47 @@ function SpawnRandomStructure() {
     SummonBlocks(Grid, i, j, Math.floor(Math.random() * 7));
 }
 
+const AvailableBlocks = document.querySelectorAll('#AvailableBlocks div'); 
 const Blocks = document.getElementById('A1');
-let B = [];
-for (let i = 0; i < 3; i++) {
-    B[i] = [];
-    for (let j = 0; j < 3; j++) {
-        const block = document.createElement('div');
-        B[i][j] = block;       
-        Blocks.appendChild(block);
-    }
-}
-let temp = Math.floor(Math.random() * 7);
-Blocks.type = temp;
-SummonBlocks(B, 1, 1, temp);
+let Grids = [];
+AvailableBlocks.forEach((e, index) => {
+    let B = [];
 
-Blocks.addEventListener('dragstart', (e) => {
-    draggedElement = {
-        type: Blocks.type
-    };
-    e.dataTransfer.setData('positions', JSON.stringify(positions));
-});
-
-function RerollBlocks() {
     for (let i = 0; i < 3; i++) {
+        B[i] = [];
         for (let j = 0; j < 3; j++) {
-            clearCell(B[i][j]);
+            const block = document.createElement('div');
+            B[i][j] = block;       
+            e.appendChild(block); 
         }
     }
 
-    temp = Math.floor(Math.random() * 7);
-    Blocks.type = temp;
-    SummonBlocks(B, 1, 1, temp);
+    Grids.push(B);
+});
+
+AvailableBlocks.forEach((e, i) => {
+    e.type = Math.floor(Math.random() * 7);
+    SummonBlocks(Grids[i], 1, 1, e.type);
+
+    e.addEventListener('dragstart', (ev) => {
+
+    draggedElement = {
+        type: e.type,
+        gridIndex: i
+    };
+
+    ev.dataTransfer.setData('text/plain', 'drag');
+    });
+});
+
+
+
+
+function RerollBlocks(index) {
+    let grid = Grids[index];
+
+    grid.flat().forEach(clearCell);
+
+    AvailableBlocks[index].type = Math.floor(Math.random() * 7);
+    SummonBlocks(grid, 1, 1, AvailableBlocks[index].type);
 }

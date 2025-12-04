@@ -13,11 +13,12 @@
 
 
 #AvailableBlocks {
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    gap: 30px;
+    display: flex;
 }
 
-#A1 {
+#A1, #A2, #A3 {
     display: grid;
     grid-template-columns: repeat(3, 30px);
     grid-template-rows: repeat(3, 30px);
