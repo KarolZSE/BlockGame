@@ -32,13 +32,18 @@ function SummonBlocks(array, i, j) {
     let GroupElements = [];
     let RandomColor = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
 
+    if (array.length === 15) {
+        if (!CanBePlaced(j, i, true)) return;
+    }
+    
+
     for (let [x, y] of positions) {
         targetX = x + j;
         targetY = y + i;
 
         if (targetX >= 0 && targetY >= 0 && targetX <= array.length - 1 && targetY <= array[0].length - 1) {
             let cell = array[targetX][targetY];
-            cell.style.border = `1px solid rgb(${[...RandomColor]})`;
+            cell.style.border = `5px solid rgb(${[...RandomColor]})`;
             if (array.length == 3) {
                 cell.style.background = 'red';
             }
@@ -127,7 +132,7 @@ function checkFullCols() {
     }
 }
 
-function CanBePlaced(centerRow, centerCol) {
+function CanBePlaced(centerRow, centerCol, AdditionalCheck = false) {
     for (let [dy, dx] of positions) {
         let targetRow = centerRow + dy;
         let targetCol = centerCol + dx;
@@ -139,6 +144,9 @@ function CanBePlaced(centerRow, centerCol) {
             targetCol < Grid[0].length ) {
                 let cell = Grid[targetRow][targetCol];
                 if (cell.classList.contains('marked')) return false;
+
+                if (AdditionalCheck && cell.dataset.structureID !== undefined) return false;
+                
             }
     }
 

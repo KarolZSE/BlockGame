@@ -26,6 +26,10 @@
     gap: 5px;
 }
 
+#AvailableBlocks div {
+    border: 0 !important;
+}
+
 .marked {
     background: red;
 }
