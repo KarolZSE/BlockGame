@@ -7,7 +7,7 @@ for (let i = 0; i < 15; i++) {
         const block = document.createElement('div');
         Grid[i][j] = block;   
         block.dataset.row = i;
-        block.dataset.col = j;    
+        block.dataset.col = j;
         Container.appendChild(block);
     }
 }
@@ -110,14 +110,40 @@ function SummonBlocks(array, i, j, type = 1) {
     });
 }
 
+let ghostCells = [];
 Container.addEventListener('dragover', (e) => {
     e.preventDefault();
+
+    const target = e.target;
+    if(!target.dataset.row) return;
+
+    const centerRow = parseInt(target.dataset.row);
+    const centerCol = parseInt(target.dataset.col);
+
+    ghostCells.forEach(c => c.classList.remove('ghost'));
+    ghostCells = [];
+
+    if (!CanBePlaced(centerRow, centerCol, false, draggedElement.type)) return;
+    
+    for (let [dy, dx] of positions[draggedElement.type]) {
+        let targetRow = centerRow + dy;
+        let targetCol = centerCol + dx;
+
+        if (
+            targetRow >= 0 && 
+            targetRow < Grid.length &&
+            targetCol >= 0 &&
+            targetCol < Grid[0].length ) {
+                let cell = Grid[targetRow][targetCol];
+                cell.classList.add('ghost');
+                ghostCells.push(cell);
+            }
+    }
 });
 
 Container.addEventListener('drop', (e) => {
     e.preventDefault();
 
-    console.log(e);
     const target = e.target;
     if(!target.dataset.row) return;
 
@@ -126,6 +152,9 @@ Container.addEventListener('drop', (e) => {
 
     if (!CanBePlaced(centerRow, centerCol, false, draggedElement.type)) return;
     
+    ghostCells.forEach(c => c.classList.remove('ghost'));
+    ghostCells = [];
+
     for (let [dy, dx] of positions[draggedElement.type]) {
         let targetRow = centerRow + dy;
         let targetCol = centerCol + dx;
@@ -251,7 +280,7 @@ function SpawnRandomStructure() {
 const AvailableBlocks = document.querySelectorAll('#AvailableBlocks div'); 
 const Blocks = document.getElementById('A1');
 let Grids = [];
-AvailableBlocks.forEach((e, index) => {
+AvailableBlocks.forEach((e) => {
     let B = [];
 
     for (let i = 0; i < 3; i++) {
@@ -280,9 +309,6 @@ AvailableBlocks.forEach((e, i) => {
     ev.dataTransfer.setData('text/plain', 'drag');
     });
 });
-
-
-
 
 function RerollBlocks(index) {
     let grid = Grids[index];
