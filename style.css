@@ -47,3 +47,13 @@
 #VisualPointsAddIndicator {
     color: green;
 }
+
+#MotivationScreen {
+    position: absolute;
+    width: 520px;
+    height: 520px;
+}
+
+#MotivationScreenText {
+    background: red;
+}

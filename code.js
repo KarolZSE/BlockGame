@@ -188,6 +188,7 @@ function checkFullRows() {
         }
 
         if (full) {
+            DisplayMotivationalScreens();
             for (let col = 0; col < 15; col++) {
                 clearCell(Grid[row][col]);
             }
@@ -207,12 +208,54 @@ function checkFullCols() {
         }
 
         if (full) {
+            DisplayMotivationalScreens();
             for (let row = 0; row < 15; row++) {
                 clearCell(Grid[row][col]);
             }
         }
     }
 }
+
+let MotivationalMultiplayer = 0;
+let MotivationScreen = document.getElementById('MotivationScreen');
+let MST = document.getElementById('MotivationScreenText');
+
+function DisplayMotivationalScreens() {
+    MotivationScreen.style.display = 'inline';
+
+    if (MotivationalMultiplayer === 0) {
+        MST.textContent = 'Good!';
+        MotivationalMultiplayer++;
+    } else if (MotivationalMultiplayer === 1) {
+        MST.textContent = 'Great!';
+        MotivationalMultiplayer++;
+    } else if (MotivationalMultiplayer === 2) {
+        MST.textContent = 'Fantastic!';
+        MotivationalMultiplayer++;
+    } else {
+        MotivationalMultiplayer++;
+        MST.textContent = `Fantastic! x${MotivationalMultiplayer}!`;
+    }
+
+    let size = 10;
+    MST.style.fontSize = size + 'px';
+
+    while (
+        MST.scrollWidth <= MotivationScreen.clientWidth &&
+        MST.scrollHeight <= MotivationScreen.clientHeight
+    ) {
+        size++;
+        MST.style.fontSize = size + 'px';
+    }
+
+    MST.style.fontSize = (size - 1) + 'px';
+
+    setTimeout(() => {
+        MotivationScreen.style.display = 'none';
+    }, 1000);
+}
+
+DisplayMotivationalScreens();
 
 function CanBePlaced(centerRow, centerCol, AdditionalCheck = false, type) {
     for (let [dy, dx] of positions[type]) {
