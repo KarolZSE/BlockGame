@@ -13,13 +13,22 @@ for (let i = 0; i < 15; i++) {
 }
 
 const positions = [
-    [0, 0],
-    [1, 0],
-    [-1, 0],
-    [0, 1],
-    [0, -1]
+    [
+        [0, 0],
+        [1, 0],
+        [-1, 0],
+        [0, 1],
+        [0, -1]
+    ],
+    [
+        [-1, 0],
+        [0, 0],
+        [1, 0],
+        [1, 1],
+    ]
 ]
 
+let draggedElement;
 const Timer = document.getElementById('Timer');
 let StartingTime = Date.now() + 10000;
 Timer.textContent = 10;
@@ -34,21 +43,21 @@ setInterval(() => {
 for (let i = 0; i < 15; i++) {
     for (let j = 0; j < 15; j++) {
         if (Math.random() > 0.9) {
-            SummonBlocks(Grid, i, j);
+            SummonBlocks(Grid, i, j, Math.round(Math.random()));
         }
     }
 }
 
-function SummonBlocks(array, i, j) {
+function SummonBlocks(array, i, j, type = 1) {
     let GroupElements = [];
     let RandomColor = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
 
     if (array.length === 15) {
-        if (!CanBePlaced(j, i, true)) return;
+        if (!CanBePlaced(j, i, true, type)) return;
     }
     
 
-    for (let [x, y] of positions) {
+    for (let [x, y] of positions[type]) {
         targetX = x + j;
         targetY = y + i;
 
@@ -77,15 +86,16 @@ Container.addEventListener('dragover', (e) => {
 Container.addEventListener('drop', (e) => {
     e.preventDefault();
 
+    console.log(e);
     const target = e.target;
     if(!target.dataset.row) return;
 
     const centerRow = parseInt(target.dataset.row);
     const centerCol = parseInt(target.dataset.col);
 
-    if (!CanBePlaced(centerRow, centerCol)) return;
+    if (!CanBePlaced(centerRow, centerCol, false, draggedElement.type)) return;
     
-    for (let [dy, dx] of positions) {
+    for (let [dy, dx] of positions[draggedElement.type]) {
         let targetRow = centerRow + dy;
         let targetCol = centerCol + dx;
 
@@ -143,8 +153,8 @@ function checkFullCols() {
     }
 }
 
-function CanBePlaced(centerRow, centerCol, AdditionalCheck = false) {
-    for (let [dy, dx] of positions) {
+function CanBePlaced(centerRow, centerCol, AdditionalCheck = false, type) {
+    for (let [dy, dx] of positions[type]) {
         let targetRow = centerRow + dy;
         let targetCol = centerCol + dx;
 
@@ -203,7 +213,7 @@ function clearCell(cell) {
 function SpawnRandomStructure() {
     let i = Math.floor(Math.random() * 15);
     let j = Math.floor(Math.random() * 15);
-    SummonBlocks(Grid, i, j);
+    SummonBlocks(Grid, i, j, Math.round(Math.random()));
 }
 
 const Blocks = document.getElementById('A1');
@@ -216,8 +226,13 @@ for (let i = 0; i < 3; i++) {
         Blocks.appendChild(block);
     }
 }
-SummonBlocks(B, 1, 1);
+let temp = Math.round(Math.random());
+Blocks.type = temp;
+SummonBlocks(B, 1, 1, temp);
 
 Blocks.addEventListener('dragstart', (e) => {
+    draggedElement = {
+        type: Blocks.type
+    };
     e.dataTransfer.setData('positions', JSON.stringify(positions));
 });
