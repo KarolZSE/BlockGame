@@ -393,3 +393,26 @@ function UpdateEnemiesHealth() {
     EnemyHealtHTML.textContent = EnemyHealt;
 }
 UpdateEnemiesHealth();
+
+Container.style.display = 'none';
+
+const PDS = document.getElementById('PlayerDefenseScreen');
+const Player = document.getElementById('Player');
+PDS.addEventListener('mousemove', (e) => {
+    Player.style.top = e.clientY - 32 + 'px';
+    Player.style.left = e.clientX - 32 + 'px';
+});
+
+function MoveObstaclesAround() {
+    const Rect = PDS.getBoundingClientRect();
+    const Obs = document.createElement('div');
+    // Obs.style.left = Rect.left;
+    Obs.classList.add('Obstacles');
+    PDS.appendChild(Obs);
+    Obs.offsetWidth;
+    setTimeout(() => {
+    }, 10);
+    Obs.style.left = Rect.width + Rect.left + 'px';  
+}
+
+MoveObstaclesAround();

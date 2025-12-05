@@ -82,3 +82,26 @@ table {
     text-align: center;
     border: 1px solid black;
 }
+
+#PlayerDefenseScreen {
+    width: 520px;
+    height: 520px;
+    background-color: antiquewhite;
+}
+
+#Player {
+    width: 64px;
+    height: 64px;
+    background: url('heart.png');
+    background-size: contain;
+    position: fixed;
+    image-rendering: pixelated;
+}
+
+.Obstacles {
+    position: absolute;
+    width: 20px;
+    height: 520px;
+    border: 1px solid black;
+    transition: all 5s linear;
+}
