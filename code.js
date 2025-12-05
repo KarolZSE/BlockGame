@@ -67,8 +67,9 @@ const Enemy = document.getElementById('Enemy');
 let EnemyState = 0;
 setInterval(() => {
     Timer.textContent = Math.floor((StartingTime - Date.now()) / 1000);
-    if (StartingTime >= Date.now()) {
+    if (Math.floor((StartingTime - Date.now()) / 1000) <= 0) {
         console.log('You run out off time');
+        UpdateEnemiesHealth();
     }
 }, 950);
 
@@ -379,3 +380,16 @@ function RerollBlocks(index) {
     AvailableBlocks[index].type = Math.floor(Math.random() * 7);
     SummonBlocks(grid, 1, 1, AvailableBlocks[index].type);
 }
+
+const EnemyHealtMaxHTML = document.getElementById('EnemyHealtMax');
+const EnemyHealtHTML = document.getElementById('EnemyHealtValue');
+let EnemyHealtMax = 100;
+let EnemyHealt = EnemyHealtMax;
+function UpdateEnemiesHealth() {
+    EnemyHealt -= Points;
+    Points = 0;
+
+    EnemyHealtMaxHTML.textContent = EnemyHealtMax;
+    EnemyHealtHTML.textContent = EnemyHealt;
+}
+UpdateEnemiesHealth();
