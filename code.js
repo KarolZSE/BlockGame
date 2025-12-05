@@ -63,13 +63,22 @@ let draggedElement;
 const Timer = document.getElementById('Timer');
 let StartingTime = Date.now() + 10000;
 Timer.textContent = 10;
-
+const Enemy = document.getElementById('Enemy');
+let EnemyState = 0;
 setInterval(() => {
     Timer.textContent = Math.floor((StartingTime - Date.now()) / 1000);
     if (StartingTime >= Date.now()) {
         console.log('You run out off time');
     }
 }, 950);
+
+setInterval(() => {
+    EnemyState++;    
+    Enemy.style.backgroundPosition = `-${200 * EnemyState}px 0`;
+    if (EnemyState >= 3) {
+        EnemyState = 0;
+    } 
+}, 400);
 
 for (let i = 0; i < 15; i++) {
     for (let j = 0; j < 15; j++) {

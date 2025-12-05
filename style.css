@@ -1,3 +1,8 @@
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #GameContainer {
     display: grid;
     grid-template-columns: repeat(15, 30px);
@@ -13,9 +18,10 @@
 
 
 #AvailableBlocks {
-    width: 400px;
+    height: 400px;
     gap: 30px;
     display: flex;
+    flex-direction: column;
 }
 
 #A1, #A2, #A3 {
@@ -56,4 +62,15 @@
 
 #MotivationScreenText {
     background: red;
+}
+
+#Enemy {
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+    background-image: url('EnemySprite/idle.png');
+    background-size: 1000px 200px;
+    background-position: 0 0;
+    image-rendering: pixelated;
 }
