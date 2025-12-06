@@ -117,3 +117,13 @@ td {
     width: 200px;
     text-align: center;
 }
+
+#PlayerHPBar {
+    position: absolute;
+    width: 200px;
+    border: 1px solid black;
+    left: 50%;
+    transform: translate(-50%);
+    background: white;
+    z-index: 1;
+}

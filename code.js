@@ -399,6 +399,13 @@ Container.style.display = 'none';
 const PDS = document.getElementById('PlayerDefenseScreen');
 const Player = document.getElementById('Player');
 
+const PlayerHealthHTML = document.getElementById('PlayerHealth');
+const phmHTML = document.getElementById('PlayerHealthMax');
+let phm = 100;
+let PlayerHealth = phm;
+
+phmHTML.textContent = phm;
+
 PDS.addEventListener('mousemove', (e) => {
     const Rect = PDS.getBoundingClientRect();
     if (e.clientX <= Rect.left) return;
@@ -410,27 +417,10 @@ PDS.addEventListener('mousemove', (e) => {
 
     let walls = document.querySelectorAll('.ObstaclesWalls');
     walls.forEach(ev => {
-       if (isCollide(ev, Player)) {
-        /*
-            let aRect = ev.getBoundingClientRect();
-            let bRect = Player.getBoundingClientRect();
-        console.log('Wall:', {
-            top: aRect.top,
-            bottom: aRect.bottom,
-            left: aRect.left,
-            right: aRect.right,
-            height: aRect.height
-        });
-        console.log('Player:', {
-            top: bRect.top,
-            bottom: bRect.bottom,
-            left: bRect.left,
-            right: bRect.right,
-            height: bRect.height
-        });
-        */
-       console.log('Works')
-    }
+        if (isCollide(ev, Player)) {
+            PlayerHealth--;
+            PlayerHealthHTML.textContent = PlayerHealth;
+        }
     });
 });
 
@@ -481,7 +471,6 @@ function MoveObstaclesAround() {
         Obs.remove();
     }, TransitionTime * 1000);
 }
-MoveObstaclesAround(); 
 setInterval(() => {
-    
+    MoveObstaclesAround();    
 }, 1000);
