@@ -479,3 +479,18 @@ function CheckForCollisions() {
 }
 
 CheckForCollisions();
+
+const SpeechBubble = document.getElementById('SpeechBubble');
+SpeechBubble.style.display = 'flex';
+let IntervalSecondGame;
+document.addEventListener('keydown', () => {
+    console.log(SpeechBubble.style.display);
+    if (SpeechBubble.style.display == 'flex') {
+        SpeechBubble.style.display = 'none';
+        Container.style.display = 'none';
+        PDS.style.display = 'block';
+        IntervalSecondGame = setInterval(() => {
+            MoveObstaclesAround();
+        }, 1000);
+    }
+});

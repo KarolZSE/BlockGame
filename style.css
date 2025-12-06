@@ -1,3 +1,7 @@
+body {
+    overflow: hidden;
+}
+
 table {
     margin-left: auto;
     margin-right: auto;
@@ -134,7 +138,7 @@ td {
     display: flex;
     left: 50%;
     transform: translate(-50%);
-    bottom: 0;
+    bottom: 10px;
     width: 98vw;
     height: 300px;
     background: white;
