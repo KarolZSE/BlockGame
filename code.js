@@ -62,11 +62,23 @@ const positions = [
 let draggedElement;
 const Timer = document.getElementById('Timer');
 const EnemyIcon = document.getElementById('EnemyIcon');
+const TimeLeft = document.getElementById('TimeLeft');
 let StartingTime = Date.now() + 10000;
+let StartingTimeSecond;
 Timer.textContent = 10;
 const Enemy = document.getElementById('Enemy');
 let EnemyState = 0;
+const PDS = document.getElementById('PlayerDefenseScreen');
+
 setInterval(() => {
+    console.log(PDS.style.display)
+    if (PDS.style.display == 'block') {
+        TimeLeft.textContent = Math.floor((StartingTimeSecond - Date.now()) / 1000);
+        if (Math.floor((StartingTimeSecond - Date.now()) / 1000) <= 0) {
+            console.log('You`ve survived!');
+            clearInterval(IntervalSecondGame);
+        } 
+    }
     Timer.textContent = Math.floor((StartingTime - Date.now()) / 1000);
     if (Math.floor((StartingTime - Date.now()) / 1000) <= 0) {
         console.log('You run out off time');
@@ -398,7 +410,6 @@ UpdateEnemiesHealth();
 
 // Container.style.display = 'none';
 
-const PDS = document.getElementById('PlayerDefenseScreen');
 const Player = document.getElementById('Player');
 
 const PlayerHealthHTML = document.getElementById('PlayerHealth');
@@ -489,6 +500,7 @@ document.addEventListener('keydown', () => {
         SpeechBubble.style.display = 'none';
         Container.style.display = 'none';
         PDS.style.display = 'block';
+        StartingTimeSecond = Date.now() + 10000;
         IntervalSecondGame = setInterval(() => {
             MoveObstaclesAround();
         }, 1000);
