@@ -399,36 +399,14 @@ Container.style.display = 'none';
 const PDS = document.getElementById('PlayerDefenseScreen');
 const Player = document.getElementById('Player');
 
-/*
-let mouseX = 0;
-let mouseY = 0;
-let currentX = 0;
-let currentY = 0;
-
 PDS.addEventListener('mousemove', (e) => {
-    const rect = PDS.getBoundingClientRect();
-
-    mouseX = e.clientX - rect.left - 32;
-    mouseY = e.clientY - rect.top - 32;
-});
-
-function Animate() {
-    const speed = 0.15;
-
-    currentX = (mouseX - currentX) * speed;
-    currentY = (mouseY - currentY) * speed;
-
-    Player.style.transform = `translate(${currentX}px, ${currentY}px)`;
-
-    requestAnimationFrame(Animate);
-}
-
-Animate();
-*/
-
-document.getElementById('SecondGameContainer').addEventListener('mousemove', (e) => {
-    Player.style.left = (e.clientX - 32) + 'px';
-    Player.style.top = (e.clientY - 32) + 'px';
+    const Rect = PDS.getBoundingClientRect();
+    if (e.clientX <= Rect.left) return;
+    if (e.clientX >= Rect.left + Rect.width) return;
+    if (e.clientY <= Rect.top) return;
+    if (e.clientY >= Rect.top + Rect.height) return;
+    Player.style.left = e.clientX - 32 + 'px';
+    Player.style.top = e.clientY - 32 + 'px';
 });
 
 function MoveObstaclesAround() {
