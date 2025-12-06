@@ -414,14 +414,6 @@ PDS.addEventListener('mousemove', (e) => {
     if (e.clientY >= Rect.top + Rect.height) return;
     Player.style.left = e.clientX - Rect.left - 16 + 'px';
     Player.style.top = e.clientY - Rect.top - 16 + 'px';
-
-    let walls = document.querySelectorAll('.ObstaclesWalls');
-    walls.forEach(ev => {
-        if (isCollide(ev, Player)) {
-            PlayerHealth--;
-            PlayerHealthHTML.textContent = PlayerHealth;
-        }
-    });
 });
 
 function isCollide(a, b) {
@@ -474,3 +466,17 @@ function MoveObstaclesAround() {
 setInterval(() => {
     MoveObstaclesAround();    
 }, 1000);
+
+function CheckForCollisions() {
+    let walls = document.querySelectorAll('.ObstaclesWalls');
+    walls.forEach(ev => {
+        if (isCollide(ev, Player)) {
+            PlayerHealth--;
+            PlayerHealthHTML.textContent = PlayerHealth;
+        }
+    });
+
+    requestAnimationFrame(CheckForCollisions);
+}
+
+CheckForCollisions();
