@@ -403,16 +403,32 @@ PDS.addEventListener('mousemove', (e) => {
     Player.style.left = e.clientX - 32 + 'px';
 });
 
+
 function MoveObstaclesAround() {
     const Rect = PDS.getBoundingClientRect();
     const Obs = document.createElement('div');
-    // Obs.style.left = Rect.left;
+    const First = document.createElement('div');
+    const Second = document.createElement('div');
+
+    First.classList.add('ObstaclesWalls');
+    let FirstWallHeight = Math.floor(Math.random() * 440);
+    First.style.height = FirstWallHeight + 'px';
+    Obs.appendChild(First);
+
+    Second.classList.add('ObstaclesWalls');
+    Second.style.position = 'relative';
+    Second.style.top = FirstWallHeight + 80 + 'px';
+    Second.style.height = 520 - FirstWallHeight - 80 + 'px';
+
+    Obs.appendChild(Second);
+
+    Obs.style.left = Rect.left + 'px';
     Obs.classList.add('Obstacles');
     PDS.appendChild(Obs);
     Obs.offsetWidth;
     setTimeout(() => {
     }, 10);
-    Obs.style.left = Rect.width + Rect.left + 'px';  
+    Obs.style.left = Rect.width + Rect.left - 20 + 'px';  
 }
 
 MoveObstaclesAround();

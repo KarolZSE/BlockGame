@@ -102,6 +102,11 @@ table {
     position: absolute;
     width: 20px;
     height: 520px;
-    border: 1px solid black;
     transition: all 5s linear;
+}
+
+.ObstaclesWalls {
+    position: absolute;
+    width: 20px;
+    border: 1px solid black;
 }
