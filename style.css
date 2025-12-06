@@ -84,6 +84,7 @@ table {
 }
 
 #PlayerDefenseScreen {
+    display: none;
     width: 520px;
     height: 520px;
     background-color: antiquewhite;
@@ -126,4 +127,41 @@ td {
     transform: translate(-50%);
     background: white;
     z-index: 1;
+}
+
+#SpeechBubble {
+    position: absolute;
+    display: flex;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 0;
+    width: 98vw;
+    height: 300px;
+    background: white;
+    border: 1px solid black;
+}
+
+#EnemyIcon {
+    height: 300px;
+    width: 300px;
+    box-sizing: border-box;
+    background-image: url('EnemySprite/idle.png');
+    background-size: 1500px 300px;
+    image-rendering: pixelated;
+    border-right: 1px solid black;
+}
+
+@font-face {
+    font-family: BleedingPixels;
+    src: url('BleedingPixels.ttf');;
+}
+#EnemyText {
+    padding: 20px;
+    font-size: 32px;
+}
+
+#SkipInfo {
+    position: relative;
+    top: 280px;
+    left: -725px;
 }

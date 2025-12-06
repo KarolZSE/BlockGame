@@ -61,6 +61,7 @@ const positions = [
 
 let draggedElement;
 const Timer = document.getElementById('Timer');
+const EnemyIcon = document.getElementById('EnemyIcon');
 let StartingTime = Date.now() + 10000;
 Timer.textContent = 10;
 const Enemy = document.getElementById('Enemy');
@@ -76,6 +77,7 @@ setInterval(() => {
 setInterval(() => {
     EnemyState++;    
     Enemy.style.backgroundPosition = `-${200 * EnemyState}px 0`;
+    EnemyIcon.style.backgroundPosition = `-${300 * EnemyState}px 0`;
     if (EnemyState >= 3) {
         EnemyState = 0;
     } 
@@ -394,7 +396,7 @@ function UpdateEnemiesHealth() {
 }
 UpdateEnemiesHealth();
 
-Container.style.display = 'none';
+// Container.style.display = 'none';
 
 const PDS = document.getElementById('PlayerDefenseScreen');
 const Player = document.getElementById('Player');
@@ -463,9 +465,6 @@ function MoveObstaclesAround() {
         Obs.remove();
     }, TransitionTime * 1000);
 }
-setInterval(() => {
-    MoveObstaclesAround();    
-}, 1000);
 
 function CheckForCollisions() {
     let walls = document.querySelectorAll('.ObstaclesWalls');
