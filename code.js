@@ -398,11 +398,38 @@ Container.style.display = 'none';
 
 const PDS = document.getElementById('PlayerDefenseScreen');
 const Player = document.getElementById('Player');
+
+/*
+let mouseX = 0;
+let mouseY = 0;
+let currentX = 0;
+let currentY = 0;
+
 PDS.addEventListener('mousemove', (e) => {
-    Player.style.top = e.clientY - 32 + 'px';
-    Player.style.left = e.clientX - 32 + 'px';
+    const rect = PDS.getBoundingClientRect();
+
+    mouseX = e.clientX - rect.left - 32;
+    mouseY = e.clientY - rect.top - 32;
 });
 
+function Animate() {
+    const speed = 0.15;
+
+    currentX = (mouseX - currentX) * speed;
+    currentY = (mouseY - currentY) * speed;
+
+    Player.style.transform = `translate(${currentX}px, ${currentY}px)`;
+
+    requestAnimationFrame(Animate);
+}
+
+Animate();
+*/
+
+document.getElementById('SecondGameContainer').addEventListener('mousemove', (e) => {
+    Player.style.left = (e.clientX - 32) + 'px';
+    Player.style.top = (e.clientY - 32) + 'px';
+});
 
 function MoveObstaclesAround() {
     const Rect = PDS.getBoundingClientRect();
@@ -410,25 +437,30 @@ function MoveObstaclesAround() {
     const First = document.createElement('div');
     const Second = document.createElement('div');
 
+    const TransitionTime = 1.5 + Math.random() * 3.5;
+    Obs.style.transition = `all ${TransitionTime}s linear`;
+
     First.classList.add('ObstaclesWalls');
     let FirstWallHeight = Math.floor(Math.random() * 440);
     First.style.height = FirstWallHeight + 'px';
     Obs.appendChild(First);
 
     Second.classList.add('ObstaclesWalls');
-    Second.style.position = 'relative';
     Second.style.top = FirstWallHeight + 80 + 'px';
     Second.style.height = 520 - FirstWallHeight - 80 + 'px';
-
     Obs.appendChild(Second);
 
     Obs.style.left = Rect.left + 'px';
     Obs.classList.add('Obstacles');
     PDS.appendChild(Obs);
     Obs.offsetWidth;
+    Obs.style.left = Rect.width + Rect.left - 20 + 'px';
+
     setTimeout(() => {
-    }, 10);
-    Obs.style.left = Rect.width + Rect.left - 20 + 'px';  
+        Obs.remove();
+    }, TransitionTime * 1000);
 }
 
-MoveObstaclesAround();
+setInterval(() => {
+    MoveObstaclesAround(); 
+}, 1000);
