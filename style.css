@@ -87,15 +87,17 @@ table {
     width: 520px;
     height: 520px;
     background-color: antiquewhite;
+    position: relative;
 }
 
 #Player {
-    width: 64px;
-    height: 64px;
+    width: 32px;
+    height: 32px;
     background: url('heart.png');
-    background-size: contain;
-    position: fixed;
+    background-size: 32px 32px;
+    position: absolute;
     image-rendering: pixelated;
+    border: 1px solid black;
 }
 
 .Obstacles {

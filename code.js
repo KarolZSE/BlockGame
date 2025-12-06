@@ -405,12 +405,48 @@ PDS.addEventListener('mousemove', (e) => {
     if (e.clientX >= Rect.left + Rect.width) return;
     if (e.clientY <= Rect.top) return;
     if (e.clientY >= Rect.top + Rect.height) return;
-    Player.style.left = e.clientX - 32 + 'px';
-    Player.style.top = e.clientY - 32 + 'px';
+    Player.style.left = e.clientX - Rect.left - 16 + 'px';
+    Player.style.top = e.clientY - Rect.top - 16 + 'px';
+
+    let walls = document.querySelectorAll('.ObstaclesWalls');
+    walls.forEach(ev => {
+       if (isCollide(ev, Player)) {
+        /*
+            let aRect = ev.getBoundingClientRect();
+            let bRect = Player.getBoundingClientRect();
+        console.log('Wall:', {
+            top: aRect.top,
+            bottom: aRect.bottom,
+            left: aRect.left,
+            right: aRect.right,
+            height: aRect.height
+        });
+        console.log('Player:', {
+            top: bRect.top,
+            bottom: bRect.bottom,
+            left: bRect.left,
+            right: bRect.right,
+            height: bRect.height
+        });
+        */
+       console.log('Works')
+    }
+    });
 });
 
+function isCollide(a, b) {
+    let aRect = a.getBoundingClientRect();
+    let bRect = b.getBoundingClientRect();
+    
+    return !(
+        ((aRect.top + aRect.height) <= (bRect.top)) ||
+        (aRect.top >= (bRect.top + bRect.height)) ||
+        ((aRect.left + aRect.width) <= bRect.left) ||
+        (aRect.left >= (bRect.left + bRect.width))
+    );
+}
+
 function MoveObstaclesAround() {
-    const Rect = PDS.getBoundingClientRect();
     const Obs = document.createElement('div');
     const First = document.createElement('div');
     const Second = document.createElement('div');
@@ -428,17 +464,24 @@ function MoveObstaclesAround() {
     Second.style.height = 520 - FirstWallHeight - 80 + 'px';
     Obs.appendChild(Second);
 
-    Obs.style.left = Rect.left + 'px';
     Obs.classList.add('Obstacles');
-    PDS.appendChild(Obs);
-    Obs.offsetWidth;
-    Obs.style.left = Rect.width + Rect.left - 20 + 'px';
-
+    if (Math.random() > 0.5) {
+        Obs.style.left = '500px';
+        PDS.appendChild(Obs);
+        Obs.offsetWidth;
+        Obs.style.left = '0px';
+    } else {
+        Obs.style.left = '0px';
+        PDS.appendChild(Obs);
+        Obs.offsetWidth;
+        Obs.style.left = '500px';
+    }
+    
     setTimeout(() => {
         Obs.remove();
     }, TransitionTime * 1000);
 }
-
+MoveObstaclesAround(); 
 setInterval(() => {
-    MoveObstaclesAround(); 
+    
 }, 1000);
