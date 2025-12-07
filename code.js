@@ -89,7 +89,7 @@ setInterval(() => {
     if (Container.style.display == 'grid') {
         Timer.textContent = Math.max(Math.floor((StartingTime - Date.now()) / 1000), 0);
         if (Math.floor((StartingTime - Date.now()) / 1000) <= 0) {
-            EnemyText.innerHTML = 'Auch! That hurt! Now, prepare for your <span style="font-family: BleedingPixels; color:  red;">destruction</span><br><span style="font-size: 16px">*Enemy turn starts!*</span>';
+            EnemyText.innerHTML = '<span style="font-family: BleedingPixels; color:  red;">You dare</span> to attack me?! Prepare for your <span style="font-family: BleedingPixels; color:  red;">destruction</span><br><span style="font-size: 16px">*Enemy turn starts!*</span>';
             SpeechBubble.style.display = 'flex';
             UpdateEnemiesHealth();
 
@@ -106,13 +106,26 @@ setInterval(() => {
     } 
 }, 400);
 
-for (let i = 0; i < 15; i++) {
-    for (let j = 0; j < 15; j++) {
-        if (Math.random() > 0.9) {
-            SummonBlocks(Grid, i, j, Math.floor(Math.random() * 7));
+function setStructures() {
+    Structures = [];
+    
+    for (let i = 0; i < 15; i++) {
+        for (let j = 0; j < 15; j++) {
+            clearCell(Grid[i][j]);
         }
     }
+
+    setTimeout(() => {
+         for (let i = 0; i < 15; i++) {
+            for (let j = 0; j < 15; j++) {
+                if (Math.random() > 0.9) {
+                    SummonBlocks(Grid, i, j, Math.floor(Math.random() * 7));
+                }
+            }
+        }       
+    }, 100);
 }
+setStructures();
 
 function SummonBlocks(array, i, j, type = 1) {
     let GroupElements = [];
@@ -406,9 +419,10 @@ function RerollBlocks(index) {
     SummonBlocks(grid, 1, 1, AvailableBlocks[index].type);
 }
 
+const SkipInfo = document.getElementById('SkipInfo');
 const EnemyHealtMaxHTML = document.getElementById('EnemyHealtMax');
 const EnemyHealtHTML = document.getElementById('EnemyHealtValue');
-let EnemyHealtMax = 1;
+let EnemyHealtMax = 100;
 let EnemyHealt = EnemyHealtMax;
 function UpdateEnemiesHealth() {
     EnemyHealt -= Points;
@@ -417,8 +431,12 @@ function UpdateEnemiesHealth() {
     if (EnemyHealt <= 0) {
         SpeechBubble.style.display = 'flex';
         EnemyText.innerHTML = `<div id="EnemyText">Noo! It's not possible! I cannot loose! <br><span style="font-size: 16px; color: green;">*You win (You defeated the evil ghost)!*</span></div>`;
+        SkipInfo.innerHTML = 'Press any key to <b>repeat this fight</b>...'
+        EnemyTowerBuilder();
         clearInterval(IntervalSecondGame);
         pause = true;
+        GameActive = 0;
+        EnemyHealt = 100;
     }
     EnemyHealtMaxHTML.textContent = EnemyHealtMax;
     EnemyHealtHTML.textContent = EnemyHealt;
@@ -497,12 +515,14 @@ function MoveObstaclesAround() {
 function CheckForCollisions() {
     let walls = document.querySelectorAll('.ObstaclesWalls');
     walls.forEach(ev => {
+        if (SpeechBubble.style.display == 'flex') return;
         if (isCollide(ev, Player)) {
             PlayerHealth--;
             PlayerHealthHTML.textContent = PlayerHealth;
             if (PlayerHealth <= 0) {
                 SpeechBubble.style.display = 'flex';
                 EnemyText.innerHTML = '<div id="EnemyText">Threat <span style="font-family: BleedingPixels; color:  red;">neutralized</span>, there is no more throuble...<br><span style="font-size: 16px; color: red;">*You lost (The evil ghost has bested you)!*</span></div>';      
+                SkipInfo.innerHTML = 'You <b>cannot</b> continue...';
                 clearInterval(IntervalSecondGame);
                 pause = true;
             }
@@ -526,11 +546,18 @@ document.addEventListener('keydown', () => {
     pause = false;
     if (SpeechBubble.style.display == 'flex') {
         if (GameActive == 0) {
+            AvailableBlocks.forEach(e => {
+                e.draggable = 'true';
+            });
             Container.style.display = 'grid';
+            setStructures();
             PDS.style.display = 'none';
             StartingTime = Date.now() + 10000;
             GameActive = 1;
         } else if (GameActive == 1) {
+            AvailableBlocks.forEach(e => {
+                e.draggable = 'false';
+            });
             Container.style.display = 'none';
             PDS.style.display = 'block';
             StartingTimeSecond = Date.now() + 10000;
@@ -551,4 +578,3 @@ function EnemyTowerBuilder() {
     EnemyLevel.textContent = ++CurrentFloor;
     EnemyTower.appendChild(EnemyLevel);
 }
-EnemyTowerBuilder();
