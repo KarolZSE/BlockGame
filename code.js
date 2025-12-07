@@ -1,4 +1,5 @@
 const Container = document.getElementById('GameContainer');
+Container.style.display = 'grid';
 let Grid = [];
 let Structures = [];
 for (let i = 0; i < 15; i++) {
@@ -63,26 +64,34 @@ let draggedElement;
 const Timer = document.getElementById('Timer');
 const EnemyIcon = document.getElementById('EnemyIcon');
 const TimeLeft = document.getElementById('TimeLeft');
+const SpeechBubble = document.getElementById('SpeechBubble');
 let StartingTime = Date.now() + 10000;
 let StartingTimeSecond;
 Timer.textContent = 10;
 const Enemy = document.getElementById('Enemy');
 let EnemyState = 0;
 const PDS = document.getElementById('PlayerDefenseScreen');
+const EnemyText = document.getElementById('EnemyText');
 
 setInterval(() => {
     console.log(PDS.style.display)
     if (PDS.style.display == 'block') {
-        TimeLeft.textContent = Math.floor((StartingTimeSecond - Date.now()) / 1000);
+        TimeLeft.textContent = Math.max(Math.floor((StartingTimeSecond - Date.now()) / 1000), 0);
         if (Math.floor((StartingTimeSecond - Date.now()) / 1000) <= 0) {
-            console.log('You`ve survived!');
             clearInterval(IntervalSecondGame);
+            SpeechBubble.style.display = 'flex';
+            EnemyText.innerHTML = 'You still stand after my devastaiting attack?! <span style="font-family: BleedingPixels; color:  red;">How Dare YOU!</span>';
         } 
     }
-    Timer.textContent = Math.floor((StartingTime - Date.now()) / 1000);
-    if (Math.floor((StartingTime - Date.now()) / 1000) <= 0) {
-        console.log('You run out off time');
-        UpdateEnemiesHealth();
+
+    if (Container.style.display == 'grid') {
+        Timer.textContent = Math.max(Math.floor((StartingTime - Date.now()) / 1000), 0);
+        if (Math.floor((StartingTime - Date.now()) / 1000) <= 0) {
+            EnemyText.innerHTML = 'Auch! That hurt! Now, prepare for your <span style="font-family: BleedingPixels; color:  red;">destruction</span>';
+            SpeechBubble.style.display = 'flex';
+            UpdateEnemiesHealth();
+
+        }
     }
 }, 950);
 
@@ -491,8 +500,6 @@ function CheckForCollisions() {
 
 CheckForCollisions();
 
-const SpeechBubble = document.getElementById('SpeechBubble');
-SpeechBubble.style.display = 'flex';
 let IntervalSecondGame;
 document.addEventListener('keydown', () => {
     console.log(SpeechBubble.style.display);

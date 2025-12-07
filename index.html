@@ -27,6 +27,10 @@
             </td>
             <td style="width: 520px !important;">
                 <div id="GameContainer">
+                    <div style="position: absolute; left: 50%; transform: translate(-50%); border: 1px solid black; padding: 2px; border-radius: 10px; background: rgba(122, 44, 44, 0.5); width: 200px;">
+                        <div>Time left: <span id="Timer"></span> seconds! <span id="VisualTimeAdd"></span></div>
+                        <div>Your Points: <span id="Points">0</span> <span id="VisualPointsAddIndicator"></span></div>
+                    </div>
                     <div id="MotivationScreen">
                         <h1 id="MotivationScreenText"></h1>
                     </div>
@@ -39,10 +43,7 @@
                     <div id="Player"></div>
                 </div>
             </td>
-            <td>
-                <h2>Time left: <span id="Timer"></span> seconds! <span id="VisualTimeAdd"></span></h2>
-                <h3>Your Points: <span id="Points">0</span> <span id="VisualPointsAddIndicator"></span></h3>
-            </td>
+            <td></td>
         </tr>
     </table>
     <div id="SpeechBubble">
