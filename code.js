@@ -65,7 +65,7 @@ const Timer = document.getElementById('Timer');
 const EnemyIcon = document.getElementById('EnemyIcon');
 const TimeLeft = document.getElementById('TimeLeft');
 const SpeechBubble = document.getElementById('SpeechBubble');
-let StartingTime = Date.now() + 10000;
+let StartingTime;
 let StartingTimeSecond;
 Timer.textContent = 10;
 const Enemy = document.getElementById('Enemy');
@@ -80,14 +80,14 @@ setInterval(() => {
         if (Math.floor((StartingTimeSecond - Date.now()) / 1000) <= 0) {
             clearInterval(IntervalSecondGame);
             SpeechBubble.style.display = 'flex';
-            EnemyText.innerHTML = 'You still stand after my devastaiting attack?! <span style="font-family: BleedingPixels; color:  red;">How Dare YOU!</span>';
+            EnemyText.innerHTML = 'You still stand after my devastaiting attack?! <span style="font-family: BleedingPixels; color:  red;">How Dare YOU!</span><br><span style="font-size: 16px">*Your turn starts!*</span>';
         } 
     }
 
     if (Container.style.display == 'grid') {
         Timer.textContent = Math.max(Math.floor((StartingTime - Date.now()) / 1000), 0);
         if (Math.floor((StartingTime - Date.now()) / 1000) <= 0) {
-            EnemyText.innerHTML = 'Auch! That hurt! Now, prepare for your <span style="font-family: BleedingPixels; color:  red;">destruction</span>';
+            EnemyText.innerHTML = 'Auch! That hurt! Now, prepare for your <span style="font-family: BleedingPixels; color:  red;">destruction</span><br><span style="font-size: 16px">*Enemy turn starts!*</span>';
             SpeechBubble.style.display = 'flex';
             UpdateEnemiesHealth();
 
@@ -501,15 +501,25 @@ function CheckForCollisions() {
 CheckForCollisions();
 
 let IntervalSecondGame;
+let GameActive = 0;
+SpeechBubble.style.display = 'flex';
 document.addEventListener('keydown', () => {
     console.log(SpeechBubble.style.display);
     if (SpeechBubble.style.display == 'flex') {
+        if (GameActive == 0) {
+            Container.style.display = 'grid';
+            PDS.style.display = 'none';
+            StartingTime = Date.now() + 10000;
+            GameActive = 1;
+        } else if (GameActive == 1) {
+            Container.style.display = 'none';
+            PDS.style.display = 'block';
+            StartingTimeSecond = Date.now() + 10000;
+            IntervalSecondGame = setInterval(() => {
+                MoveObstaclesAround();
+            }, 1000);
+            GameActive = 0;
+        }
         SpeechBubble.style.display = 'none';
-        Container.style.display = 'none';
-        PDS.style.display = 'block';
-        StartingTimeSecond = Date.now() + 10000;
-        IntervalSecondGame = setInterval(() => {
-            MoveObstaclesAround();
-        }, 1000);
     }
 });

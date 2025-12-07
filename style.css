@@ -135,7 +135,7 @@ td {
 
 #SpeechBubble {
     position: absolute;
-    display: none;
+    display: flex;
     left: 50%;
     transform: translate(-50%);
     bottom: 10px;
@@ -159,13 +159,15 @@ td {
     font-family: BleedingPixels;
     src: url('BleedingPixels.ttf');;
 }
+
 #EnemyText {
     padding: 20px;
     font-size: 32px;
 }
 
 #SkipInfo {
-    position: relative;
-    top: 280px;
-    left: -725px;
+    position: absolute;
+    padding: 10px;
+    bottom: 0;
+    font-size: 24px;
 }
