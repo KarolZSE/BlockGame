@@ -25,5 +25,5 @@ The enemy launches **obstacles** (like flappy bird) on top of you:
     - after losing, the only way to play again is to **refresh the website**.
 
 # Attribution
-Enemy's sprite - darkpixel (https://darkpixel-kronovi.itch.io/undead-executioner)
-Scary font (in enemys speech) - Druid (https://druid-cz.itch.io/pixel-horror-font-pack)
+- Enemy's sprite - darkpixel (https://darkpixel-kronovi.itch.io/undead-executioner)
+- Scary font (in enemys speech) - Druid (https://druid-cz.itch.io/pixel-horror-font-pack)

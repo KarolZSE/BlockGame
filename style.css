@@ -65,7 +65,8 @@ table {
 }
 
 #MotivationScreenText {
-    background: red;
+    color: aquamarine;
+    -webkit-text-stroke: 5px blue;
 }
 
 #Enemy {
@@ -102,7 +103,6 @@ table {
     background-size: 32px 32px;
     position: absolute;
     image-rendering: pixelated;
-    border: 1px solid black;
 }
 
 .Obstacles {

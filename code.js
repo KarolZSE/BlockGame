@@ -108,7 +108,7 @@ setInterval(() => {
 
 function setStructures() {
     Structures = [];
-    
+
     for (let i = 0; i < 15; i++) {
         for (let j = 0; j < 15; j++) {
             clearCell(Grid[i][j]);
@@ -264,7 +264,7 @@ function checkFullCols() {
     }
 }
 
-let MotivationalMultiplayer = 0;
+let MotivationalMultiplayer = -1;
 let MotivationScreen = document.getElementById('MotivationScreen');
 let MST = document.getElementById('MotivationScreenText');
 
@@ -333,13 +333,14 @@ let Points = 0;
 let VisualTimeAdd = document.getElementById('VisualTimeAdd');
 
 function CheckCompleted() {
+    let temp = 0;
     Structures.forEach(e => {
         let allMarked = e.cells.every(cell => cell.classList.contains('marked'));
 
         if (allMarked && !e.completed) {
             e.completed = true;
 
-            StartingTime += 5000;
+            StartingTime += 6000;
             
             VisualTimeAdd.textContent = '+5 ↑';
 
@@ -359,14 +360,19 @@ function CheckCompleted() {
 
             Structures = Structures.filter(s => s !== e);
 
+            temp = 1;
+            DisplayMotivationalScreens();
             SpawnRandomStructure();
         }
     });
+    if (temp == 0) {
+        MotivationalMultiplayer = 0;
+    }
 }
 
 function clearCell(cell) {
     cell.classList.remove('marked');
-    cell.removeAttribute('data-structure-id');
+    delete cell.dataset.structureID;
     cell.style.border = '';
     cell.style.background = '';
 }
@@ -484,14 +490,18 @@ function MoveObstaclesAround() {
     const TransitionTime = 1.5 + Math.random() * 3.5;
     Obs.style.transition = `all ${TransitionTime}s linear`;
 
+    let RandomColor = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
+
     First.classList.add('ObstaclesWalls');
     let FirstWallHeight = Math.floor(Math.random() * 440);
     First.style.height = FirstWallHeight + 'px';
+    First.style.background = `rgb(${[...RandomColor]})`;
     Obs.appendChild(First);
 
     Second.classList.add('ObstaclesWalls');
     Second.style.top = FirstWallHeight + 80 + 'px';
     Second.style.height = 520 - FirstWallHeight - 80 + 'px';
+    Second.style.background = `rgb(${[...RandomColor]})`;
     Obs.appendChild(Second);
 
     Obs.classList.add('Obstacles');
