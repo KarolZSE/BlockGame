@@ -443,6 +443,7 @@ function UpdateEnemiesHealth() {
         pause = true;
         GameActive = 0;
         EnemyHealt = 100;
+        PlayerHealth = 100;
     }
     EnemyHealtMaxHTML.textContent = EnemyHealtMax;
     EnemyHealtHTML.textContent = EnemyHealt;
@@ -550,9 +551,6 @@ SpeechBubble.style.display = 'flex';
 document.addEventListener('keydown', () => {
     console.log(SpeechBubble.style.display);
     if (PlayerHealth <= 0) return;
-    if (EnemyHealt <= 0) {
-
-    }
     pause = false;
     if (SpeechBubble.style.display == 'flex') {
         if (GameActive == 0) {

@@ -27,3 +27,4 @@ The enemy launches **obstacles** (like flappy bird) on top of you:
 # Attribution
 - Enemy's sprite - darkpixel (https://darkpixel-kronovi.itch.io/undead-executioner)
 - Scary font (in enemys speech) - Druid (https://druid-cz.itch.io/pixel-horror-font-pack)
+- Pixel font (for the rest of the game) - Yuki Pixels (https://www.1001fonts.com/users/yuki-pixels/)
