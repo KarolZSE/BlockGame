@@ -73,7 +73,9 @@ let EnemyState = 0;
 const PDS = document.getElementById('PlayerDefenseScreen');
 const EnemyText = document.getElementById('EnemyText');
 
+let pause = true;
 setInterval(() => {
+    if (pause) return;
     console.log(PDS.style.display)
     if (PDS.style.display == 'block') {
         TimeLeft.textContent = Math.max(Math.floor((StartingTimeSecond - Date.now()) / 1000), 0);
@@ -406,12 +408,18 @@ function RerollBlocks(index) {
 
 const EnemyHealtMaxHTML = document.getElementById('EnemyHealtMax');
 const EnemyHealtHTML = document.getElementById('EnemyHealtValue');
-let EnemyHealtMax = 100;
+let EnemyHealtMax = 1;
 let EnemyHealt = EnemyHealtMax;
 function UpdateEnemiesHealth() {
     EnemyHealt -= Points;
     Points = 0;
 
+    if (EnemyHealt <= 0) {
+        SpeechBubble.style.display = 'flex';
+        EnemyText.innerHTML = `<div id="EnemyText">Noo! It's not possible! I cannot loose! <br><span style="font-size: 16px; color: green;">*You win (You defeated the evil ghost)!*</span></div>`;
+        clearInterval(IntervalSecondGame);
+        pause = true;
+    }
     EnemyHealtMaxHTML.textContent = EnemyHealtMax;
     EnemyHealtHTML.textContent = EnemyHealt;
 }
@@ -492,6 +500,12 @@ function CheckForCollisions() {
         if (isCollide(ev, Player)) {
             PlayerHealth--;
             PlayerHealthHTML.textContent = PlayerHealth;
+            if (PlayerHealth <= 0) {
+                SpeechBubble.style.display = 'flex';
+                EnemyText.innerHTML = '<div id="EnemyText">Threat <span style="font-family: BleedingPixels; color:  red;">neutralized</span>, there is no more throuble...<br><span style="font-size: 16px; color: red;">*You lost (The evil ghost has bested you)!*</span></div>';      
+                clearInterval(IntervalSecondGame);
+                pause = true;
+            }
         }
     });
 
@@ -505,6 +519,11 @@ let GameActive = 0;
 SpeechBubble.style.display = 'flex';
 document.addEventListener('keydown', () => {
     console.log(SpeechBubble.style.display);
+    if (PlayerHealth <= 0) return;
+    if (EnemyHealt <= 0) {
+
+    }
+    pause = false;
     if (SpeechBubble.style.display == 'flex') {
         if (GameActive == 0) {
             Container.style.display = 'grid';
