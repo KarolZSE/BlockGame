@@ -542,3 +542,13 @@ document.addEventListener('keydown', () => {
         SpeechBubble.style.display = 'none';
     }
 });
+
+const EnemyTower = document.getElementById('EnemyTower');
+CurrentFloor = 0;
+
+function EnemyTowerBuilder() {
+    const EnemyLevel = document.createElement('div');
+    EnemyLevel.textContent = ++CurrentFloor;
+    EnemyTower.appendChild(EnemyLevel);
+}
+EnemyTowerBuilder();

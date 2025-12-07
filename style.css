@@ -171,3 +171,49 @@ td {
     bottom: 0;
     font-size: 24px;
 }
+
+#EnemyTower {
+    overflow-y: scroll;
+    box-sizing: content-box;
+    width: 220px;
+    height: 700px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    gap: 10px;
+}
+
+#EnemyTower div {
+    position: relative;
+    height: 180px;
+    width: 180px;
+    border: 1px solid black;
+    flex-shrink: 0;
+    overflow: hidden;
+    background-image: url('EnemySprite/idle.png');
+    background-size: 900px 180px;
+    image-rendering: pixelated;
+}
+
+#EnemyTower div::before,
+#EnemyTower div::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250%;
+    height: 4px;
+    background: red;
+    transform-origin: center;
+}
+
+#EnemyTower div::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+#EnemyTower div::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
